@@ -9,7 +9,7 @@ GitLab Repository Management Tool for Course Assistants
 ![settings](images/settings.png)
 
 ## Planned Features
-- [ ] Detailed view of CI statues by branch
+- [ ] Detailed view of CI statuses by branch
 - [ ] View tags
 - [ ] View merge status, merge requests
 - [ ] View repo filestructure
