@@ -13,3 +13,4 @@ GitLab Repository Management Tool for Course Assistants
 - [ ] View tags
 - [ ] View merge status, merge requests
 - [ ] View repo filestructure
+- [ ] Light mode (maybe)
