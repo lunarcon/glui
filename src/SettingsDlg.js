@@ -28,7 +28,7 @@ class SettingsDlg extends React.Component {
             open: false
         };
         if (this.state.url === "") {
-            this.state.url = "kgcoe-git.rit.edu";
+            this.state.url = "https://kgcoe-git.rit.edu";
         }
         if (this.state.regex === "") {
             this.state.regex = "rest-.+";

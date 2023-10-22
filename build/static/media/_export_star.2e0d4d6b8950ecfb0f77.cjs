@@ -1,1 +1,0 @@
-"use strict";function _export_star(t,e){return Object.keys(t).forEach((function(r){"default"===r||Object.prototype.hasOwnProperty.call(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:function(){return t[r]}})})),t}exports._=exports._export_star=_export_star;
