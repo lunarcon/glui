@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/glui/static/css/main.4a27e5f1.css",
-    "main.js": "/glui/static/js/main.034c6145.js",
+    "main.js": "/glui/static/js/main.42738ac2.js",
     "static/js/787.1bc04b0f.chunk.js": "/glui/static/js/787.1bc04b0f.chunk.js",
     "index.html": "/glui/index.html",
     "main.4a27e5f1.css.map": "/glui/static/css/main.4a27e5f1.css.map",
-    "main.034c6145.js.map": "/glui/static/js/main.034c6145.js.map",
+    "main.42738ac2.js.map": "/glui/static/js/main.42738ac2.js.map",
     "787.1bc04b0f.chunk.js.map": "/glui/static/js/787.1bc04b0f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4a27e5f1.css",
-    "static/js/main.034c6145.js"
+    "static/js/main.42738ac2.js"
   ]
 }
