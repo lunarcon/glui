@@ -40,6 +40,7 @@ class RepoTable extends React.Component {
       filter: props.filter,
       failOnly: false,
       selectedRepo: null,
+      loaded: props.loaded,
     };
 
     this.displayInfo = displayInfo.bind(this);
@@ -55,6 +56,9 @@ class RepoTable extends React.Component {
     }
     if (this.props.failOnly !== prevProps.failOnly) {
       this.setState({ failOnly: this.props.failOnly });
+    }
+    if (this.props.loaded !== prevProps.loaded) {
+      this.setState({ loaded: this.props.loaded });
     }
   }
 
@@ -87,6 +91,8 @@ class RepoTable extends React.Component {
             })
             .filter((item) => {
               return !this.state.failOnly || item.cistatus !== "success";
+            }).filter((item) => {
+              return item.id !== 0;
             })
             .map((item) => (
               <Tooltip content={"Click to view details"}>
@@ -99,12 +105,13 @@ class RepoTable extends React.Component {
                       <Avatar
                         initials={"" + getGroupNo(item)}
                         color="colorful"
+                        style={{ marginRight: "10px", marginBottom: "5px" }}
                       />
                     </Tooltip>
                     <Tooltip content={"Go to repository"}>
                       <Button
                         icon={<LinkRegular />}
-                        style={{ fontFamily: "monospace", marginLeft: "10px" }}
+                        style={{ fontFamily: "monospace", marginBottom: "5px"}}
                         onClick={() => window.open(item.web_url, "_blank")}
                       >
                         {item.name.padEnd(12, "\u00A0")}
@@ -148,27 +155,13 @@ class RepoTable extends React.Component {
               </TableRow>
               </Tooltip>
             ))}
-
-          {this.state.items.length === 0 &&
+            
+          {!this.state.loaded &&
             url !== null &&
-            token !== null &&
-            renderTableSkeleton()}
-          {this.state.items.length === 0 &&
-            url !== null &&
-            token !== null &&
-            renderTableSkeleton()}
-          {this.state.items.length === 0 &&
-            url !== null &&
-            token !== null &&
-            renderTableSkeleton()}
-          {this.state.items.length === 0 &&
-            url !== null &&
-            token !== null &&
-            renderTableSkeleton()}
-          {this.state.items.length === 0 &&
-            url !== null &&
-            token !== null &&
-            renderTableSkeleton()}
+            Array(Math.max(5 - this.state.items.length, 2))
+              .fill(0)
+              .map(renderTableSkeleton)
+          }
 
           {(url === null || token === null) && (
             <MessageBar
@@ -191,7 +184,7 @@ class RepoTable extends React.Component {
             </MessageBar>
           )}
 
-          {this.state.items.length === 0 && url !== null && token !== null && (
+          {!this.state.loaded && url !== null && token !== null && (
             <>
               <MessageBar
                 intent="info"
@@ -237,7 +230,7 @@ class RepoTable extends React.Component {
 }
 
 function renderTableSkeleton() {
-  return <TableSkeleton />;
+  return <TableSkeleton/>;
 }
 
 function renderCIStatus(item) {

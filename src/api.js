@@ -30,7 +30,7 @@ async function getRepositories(subgroup_id) {
   return response.data
 }
 
-export async function getAllRepositories() {
+export async function getAllRepositories(callback) {
   const subgroups = await getSubgroups();
 
   let repositories = [];
@@ -42,6 +42,9 @@ export async function getAllRepositories() {
       repo.branches = await getBranches(repo.id);
       repo.cistatus = await getBranchCIStatus(repo.id, repo.branches.slice(-1)[0]);
       repo.latestcommit = await getLatestCommit(repo.id);
+      if (callback) {
+        callback(repo);
+      }
     }
 
     repositories = repositories.concat(repos);
@@ -131,5 +134,19 @@ async function getLatestCommit(repoid) {
     }
 
     return <>{linkText} <Link href={commit_url.padEnd(12, '\u00A0')} target="_blank">{commit_id.substring(0, 8)}</Link></>;
+  });
+
+}
+
+export async function getTags(repoid) {
+  return axios.get(
+    `${url}/api/v4/projects/${repoid}/repository/tags?per_page=100`,
+    {
+      headers: {
+        "PRIVATE-TOKEN": token,
+      },
+    }
+  ).then((response) => {
+    return response.data;
   });
 }

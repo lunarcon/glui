@@ -17,17 +17,25 @@ class App extends React.Component {
     this.state = {
       repolist: [],
       filterTerm: regex || "",
-      failOnly: false
+      failOnly: false,
+      loaded: false
     };
-    if (url && token) {
-      getAllRepositories().then((result) => {this.setState({repolist: result}); console.log(this.state.repolist[0]);})
-    }
+    this.addRepoCallback = this.addRepoCallback.bind(this);
+  }
+
+  componentDidMount() {
+    getAllRepositories(this.addRepoCallback).then(() => {this.setState({loaded: true});});
+  }
+
+  addRepoCallback(repo) {
+    this.setState({repolist: [...this.state.repolist, repo]});
   }
 
   render() {
     return (  
       <div className="App" style={{ paddingBottom: '20px', height: '100%'}}>
-        <div style={{ position: 'sticky', top: '0', zIndex: '1', padding: '20px', backgroundColor: '#2f2f2f', boxShadow: '0px 0px 30px 0px rgba(0,0,0,0.55)'}}>
+        {/* make it resize when item flows to bottom */}
+        <div style={{position: 'sticky', top: '0', zIndex: '1', padding: '20px', backgroundColor: '#2f2f2f', boxShadow: '0px 0px 30px 0px rgba(0,0,0,0.55)', overflow: 'auto'}}>
         <HelpDialog/>
         <SettingsDlg open={regex === null || url === null || token === null}/>
         <Label style={{color: 'white', fontSize: '20px', fontWeight: 'bold', marginRight: '20px'}}>GLUI</Label>
@@ -36,15 +44,15 @@ class App extends React.Component {
         }}
         label="Filter Passing"/>
         <Button appearance={
-          !this.state.repolist.length ? "primary" : "outline"
+          !this.state.loaded ? "primary" : "outline"
         } onClick={() => {
-          this.setState({repolist: []});
-          getAllRepositories().then((result) => {this.setState({repolist: result});})}
-        }
+          this.setState({repolist: [], loaded: false});
+          getAllRepositories(this.addRepoCallback).then(() => {this.setState({loaded: true});})
+        }}
         style={{float: 'right', marginLeft: '10px'}} icon={<ArrowClockwiseRegular/>}></Button>
         <Input placeholder={"Search/Filter (default "+regex+")"} onChange={(event) => this.setState({filterTerm: event.target.value})} style={{float: 'right', width: '200px'}}></Input>
         </div>
-        <RepoTable items={this.state.repolist} filter={this.state.filterTerm} failOnly={this.state.failOnly}/>
+        <RepoTable items={this.state.repolist} filter={this.state.filterTerm} failOnly={this.state.failOnly} loaded={this.state.loaded}/>
         
       </div>
     );

@@ -12,8 +12,10 @@ import {
     Input,
     Label,
     Link,
-    Tooltip
+    Tooltip,
 } from "@fluentui/react-components";
+
+import { ToggleSwitch } from "./ToggleSwitch";
 
 import { SettingsRegular, InfoRegular, WarningRegular } from '@fluentui/react-icons';
 
@@ -49,10 +51,12 @@ class SettingsDlg extends React.Component {
                             <Input placeholder={"https://kgcoe-git.rit.edu"} onChange={(event) => this.setState({url: event.target.value})} value={this.state.url}></Input>
                             <Label>Default regex to filter repositories</Label>
                             <Input placeholder={"rest-.+"} onChange={(event) => this.setState({regex: event.target.value})} value={this.state.regex}></Input>
-                            <Tooltip content={"Save it somewhere since it will be cleared if you clear cache"} relationship="label"><Label>Gitlab Personal Access Token <InfoRegular/> <Link href="https://kgcoe-git.rit.edu/-/profile/personal_access_tokens" target="_blank">Generate</Link></Label></Tooltip>
+                            <Tooltip content={"This will be cleared if you clear your cache. Do not save it."} relationship="label"><Label>Gitlab Personal Access Token <InfoRegular/> <Link href="https://kgcoe-git.rit.edu/-/profile/personal_access_tokens" target="_blank">Generate</Link></Label></Tooltip>
                             <Input type="password" placeholder={"Generate a personal access token"} onChange={(event) => this.setState({token: event.target.value})} value={this.state.token}></Input>
                             <Tooltip content={"Go to "+this.state.url+"/yearsemester-dept-course-section (ex. 2231-swen-344-04) and copy the group id"} relationship="label"><Label>Main Group ID <InfoRegular/></Label></Tooltip>
                             <Input placeholder={"123456"} onChange={(event) => this.setState({main_gid: event.target.value})} value={this.state.main_gid}></Input>
+                            <ToggleSwitch label="By default, show status of latest branch" state={true}/>
+                            <ToggleSwitch label="Dark Mode" state={true}/>
                         </DialogBody>
                     </DialogContent>
                     <DialogActions style={{display: 'flex', justifyContent: 'flex-end'}}>
@@ -73,7 +77,6 @@ class SettingsDlg extends React.Component {
                     </DialogActions>
                 </DialogSurface>
             </Dialog>
-            // <div>Settings</div>
         );
     }
 }

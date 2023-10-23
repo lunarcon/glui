@@ -23,10 +23,12 @@ import {
     BranchRegular,
     StatusRegular,
     LinkRegular,
-    MailRegular
+    MailRegular,
+    CopyRegular,
+    TagRegular
   } from "@fluentui/react-icons";
 
-import { getAllBranchStatuses } from "./api";
+import { getAllBranchStatuses, getTags } from "./api";
 
 class RepoInfoDialog extends React.Component {
   constructor(props) {
@@ -35,6 +37,7 @@ class RepoInfoDialog extends React.Component {
       closeAction: this.props.closeCallback || null,
       allStatuses: [],
       open: this.props.open || false,
+      tags: []
     };
   }
 
@@ -44,7 +47,9 @@ class RepoInfoDialog extends React.Component {
       if (this.props.repo && this.props.repo.id) {
         getAllBranchStatuses(this.props.repo).then((result) => {
           this.setState({ allStatuses: result });
-          console.log(this.state.allStatuses);
+        });
+        getTags(this.props.repo.id).then((tags) => {
+            this.setState({tags: tags});
         });
       }
     }
@@ -75,10 +80,7 @@ class RepoInfoDialog extends React.Component {
               View on GitLab
             </Link>
           </div>
-          <Label style={{ marginRight: "10px" }}>
-            {this.state.repo ? this.state.repo.description : ""}
-          </Label>
-          <Label disabled={true}>
+          <Label style={{marginBottom: '10px'}}>
             {this.state.repo ? this.state.repo.namespace.full_path : ""}
           </Label>
 
@@ -139,25 +141,28 @@ class RepoInfoDialog extends React.Component {
                   </TableBody>
                 </Table>
               </DialogContent>
+                {this.state.repo ? (
+                  <div>
+                    <Label style={{marginRight: '10px', fontWeight: 'bold'}}> <TagRegular/> Tags</Label>
+                    {this.state.tags.map((tag) => {
+                      return (
+                          tag.name
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <></>
+                )}
             </DialogBody>
           </DialogContent>
-          <DialogActions>
-            <Button style={{float: 'right'}}
-              onClick={() => {
-                this.setState({ open: false });
-                if (this.state.closeAction) {
-                  this.state.closeAction();
-                }
-              }}
-            >
-              Close
-            </Button>
+          <DialogActions style={{ display: "flex", justifyContent: "flex-end"}}>
             <Button
               appearance="primary"
               onClick={() => {
                 navigator.clipboard.writeText(this.state.repo.ssh_url_to_repo);
                 alert("Copied to clipboard");
               }}
+              icon={<CopyRegular />}
             >
               Copy SSH URL
             </Button>
@@ -171,6 +176,16 @@ class RepoInfoDialog extends React.Component {
                 icon={<MailRegular />}
                 >
                 Copy Email
+            </Button>
+            <Button
+              onClick={() => {
+                this.setState({ open: false });
+                if (this.state.closeAction) {
+                  this.state.closeAction();
+                }
+              }}
+            >
+              Close
             </Button>
           </DialogActions>
         </DialogSurface>

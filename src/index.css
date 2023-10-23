@@ -13,15 +13,8 @@ code {
     monospace;
 }
 
-/* apply to everything except switches and modals */
-
 Button, Label, Link, TableRow {
   animation: fadeIn 0.3s ease-in-out;
-  animation-fill-mode: both;
-}
-
-Skeleton {
-  animation: fadeIn 0.5s ease-in-out;
   animation-fill-mode: both;
 }
 
