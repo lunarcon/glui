@@ -11,6 +11,11 @@ const regex = localStorage.getItem("regex");
 const url = localStorage.getItem("gitlab_url");
 const token = localStorage.getItem("token");
 
+const darkTheme = require('./theme/dark.json');
+const lightTheme = require('./theme/light.json');
+let isdark = localStorage.getItem("dark") === "true";
+const myTheme = isdark ? darkTheme : lightTheme;
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -34,8 +39,7 @@ class App extends React.Component {
   render() {
     return (  
       <div className="App" style={{ paddingBottom: '20px', height: '100%'}}>
-        {/* make it resize when item flows to bottom */}
-        <div style={{position: 'sticky', top: '0', zIndex: '1', padding: '20px', backgroundColor: '#2f2f2f', boxShadow: '0px 0px 30px 0px rgba(0,0,0,0.55)', overflow: 'auto'}}>
+        <div style={{position: 'sticky', top: '0', zIndex: '1', padding: '20px', boxShadow: '0px 0px 30px 0px rgba(0,0,0,0.55)', overflow: 'auto', backgroundColor: {myTheme}.colorNeutralBackground1Hover}}>
         <HelpDialog/>
         <SettingsDlg open={regex === null || url === null || token === null}/>
         <Label style={{color: 'white', fontSize: '20px', fontWeight: 'bold', marginRight: '20px'}}>GLUI</Label>

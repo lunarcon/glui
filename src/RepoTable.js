@@ -2,7 +2,7 @@ import * as React from "react";
 import {
   EditRegular,
   BranchRegular,
-  ArrowDownRegular,
+  CopyRegular,
   LinkRegular,
   MailRegular,
 } from "@fluentui/react-icons";
@@ -32,6 +32,12 @@ const columns = [
 
 const url = localStorage.getItem("gitlab_url");
 const token = localStorage.getItem("token");
+
+const darkTheme = require('./theme/dark.json');
+const lightTheme = require('./theme/light.json');
+let isdark = localStorage.getItem("dark") === "true";
+const myTheme = isdark ? darkTheme : lightTheme;
+
 class RepoTable extends React.Component {
   constructor(props) {
     super(props);
@@ -119,7 +125,7 @@ class RepoTable extends React.Component {
                     </Tooltip>
                     <Tooltip content={"Copy SSH URL"}>
                       <Button
-                        icon={<ArrowDownRegular />}
+                        icon={<CopyRegular />}
                         appearance="primary"
                         onClick={() => {
                           navigator.clipboard.writeText(item.ssh_url_to_repo);
@@ -199,7 +205,7 @@ class RepoTable extends React.Component {
               >
                 <MessageBarTitle>Fetching Repositories</MessageBarTitle>
                 <MessageBarBody>
-                  This may take around fifteen seconds.
+                  This may take a couple of seconds. Please wait.
                 </MessageBarBody>
               </MessageBar>
               <MessageBar
@@ -211,8 +217,7 @@ class RepoTable extends React.Component {
                   padding: "10px",
                   width: "95vw",
                   boxShadow: "0px 0px 10px 10px rgba(0,0,0,0.2)",
-                  // dark blue-black
-                  backgroundColor: "#1a1b2d",
+                  backgroundColor: {myTheme}.colorPaletteNavyForeground2
                 }}
               >
                 <MessageBarTitle>GLUI Tip</MessageBarTitle>

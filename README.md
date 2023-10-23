@@ -10,7 +10,5 @@ GitLab Repository Management Tool for Course Assistants
 
 ## Planned Features
 - [x] Detailed view of CI statuses by branch
-- [ ] View tags
-- [ ] View merge status, merge requests
-- [ ] View repo filestructure
-- [ ] Light mode (maybe)
+- [x] View tags
+- [x] Light mode (maybe)

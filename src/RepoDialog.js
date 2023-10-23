@@ -92,9 +92,9 @@ class RepoInfoDialog extends React.Component {
                 <Table aria-label="Repo Table">
                   <TableHeader>
                     <TableRow>
-                      <TableHeaderCell><BranchRegular/> Branch</TableHeaderCell>
-                      <TableHeaderCell><StatusRegular/> Latest CI status</TableHeaderCell>
-                      <TableHeaderCell><LinkRegular/></TableHeaderCell>
+                      <TableHeaderCell><BranchRegular/>Branch</TableHeaderCell>
+                      <TableHeaderCell><StatusRegular/>Latest CI status</TableHeaderCell>
+                      <TableHeaderCell><LinkRegular/>Link</TableHeaderCell>
                     </TableRow>
                   </TableHeader>
 
