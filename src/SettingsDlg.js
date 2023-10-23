@@ -25,7 +25,7 @@ class SettingsDlg extends React.Component {
             regex: localStorage.getItem("regex") || "",
             main_gid: localStorage.getItem("main_gid") || "",
             token: localStorage.getItem("token") || "",
-            open: false
+            open: props.open || false
         };
         if (this.state.url === "") {
             this.state.url = "https://kgcoe-git.rit.edu";

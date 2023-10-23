@@ -39,8 +39,8 @@ export async function getAllRepositories() {
     let repos = await getRepositories(subgroup);
 
     for (let repo of repos) {
-      repo.cistatus = await getBranchCIStatus(repo.id, "main");
       repo.branches = await getBranches(repo.id);
+      repo.cistatus = await getBranchCIStatus(repo.id, repo.branches.slice(-1)[0]);
       repo.latestcommit = await getLatestCommit(repo.id);
     }
 
@@ -52,7 +52,7 @@ export async function getAllRepositories() {
 
 async function getBranchCIStatus(repoid, branch) {
   return axios.get(
-    `${url}/api/v4/projects/${repoid}/pipelines?ref=${branch}&per_page=1`,
+    `${url}/api/v4/projects/${repoid}/pipelines`,
     {
       headers: {
         "PRIVATE-TOKEN": token,
@@ -62,8 +62,28 @@ async function getBranchCIStatus(repoid, branch) {
     if (response.data.length === 0) {
       return "No pipelines";
     }
-    return response.data[0].status;
+    let branchPipelines = response.data.filter((pipeline) => pipeline.ref === branch);
+    if (branchPipelines.length === 0) {
+      return "No pipelines for branch";
+    }
+    let latestPipeline = branchPipelines[0];
+    for (let pipeline of branchPipelines) {
+      if (pipeline.updated_at > latestPipeline.updated_at) {
+        latestPipeline = pipeline;
+      }
+    }
+    return latestPipeline.status;
   });
+}
+
+export async function getAllBranchStatuses(repo) {
+  let statuses = {};
+  let branches = repo.branches;
+  for (let branch of branches) {
+    let status = await getBranchCIStatus(repo.id, branch);
+    statuses[branch] = status;
+  }
+  return statuses;
 }
 
 async function getBranches(repoid) {

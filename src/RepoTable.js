@@ -21,7 +21,7 @@ import {
   MessageBarBody,
   Tooltip,
 } from "@fluentui/react-components";
-
+import RepoInfoDialog from "./RepoDialog";
 import { TableSkeleton } from "./TableSkeleton";
 
 const columns = [
@@ -39,7 +39,11 @@ class RepoTable extends React.Component {
       items: props.items,
       filter: props.filter,
       failOnly: false,
+      selectedRepo: null,
     };
+
+    this.displayInfo = displayInfo.bind(this);
+    this.closeInfo = closeInfo.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -56,6 +60,8 @@ class RepoTable extends React.Component {
 
   render() {
     return (
+      <>
+      <RepoInfoDialog repo={this.state.selectedRepo} closeCallback={this.closeInfo}/>
       <Table
         aria-label="Repo Table"
         style={{
@@ -83,7 +89,8 @@ class RepoTable extends React.Component {
               return !this.state.failOnly || item.cistatus !== "success";
             })
             .map((item) => (
-              <TableRow key={item.id}>
+              <Tooltip content={"Click to view details"}>
+              <TableRow key={item.id} onClick={() => this.displayInfo(item)}>
                 <TableCell
                   style={{ paddingTop: "10px", paddingBottom: "10px" }}
                 >
@@ -139,6 +146,7 @@ class RepoTable extends React.Component {
                   </TableCellLayout>
                 </TableCell>
               </TableRow>
+              </Tooltip>
             ))}
 
           {this.state.items.length === 0 &&
@@ -184,25 +192,46 @@ class RepoTable extends React.Component {
           )}
 
           {this.state.items.length === 0 && url !== null && token !== null && (
-            <MessageBar
-              intent="info"
-              style={{
-                marginTop: "20px",
-                display: "flex",
-                flexDirection: "column",
-                padding: "10px",
-                width: "95vw",
-                boxShadow: "0px 0px 10px 10px rgba(0,0,0,0.2)",
-              }}
-            >
-              <MessageBarTitle>Fetching Repositories</MessageBarTitle>
-              <MessageBarBody>
-                This may take around fifteen seconds.
-              </MessageBarBody>
-            </MessageBar>
+            <>
+              <MessageBar
+                intent="info"
+                style={{
+                  marginTop: "20px",
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px",
+                  width: "95vw",
+                  boxShadow: "0px 0px 10px 10px rgba(0,0,0,0.2)",
+                }}
+              >
+                <MessageBarTitle>Fetching Repositories</MessageBarTitle>
+                <MessageBarBody>
+                  This may take around fifteen seconds.
+                </MessageBarBody>
+              </MessageBar>
+              <MessageBar
+                intent="info"
+                style={{  
+                  marginTop: "20px",
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px",
+                  width: "95vw",
+                  boxShadow: "0px 0px 10px 10px rgba(0,0,0,0.2)",
+                  // dark blue-black
+                  backgroundColor: "#1a1b2d",
+                }}
+              >
+                <MessageBarTitle>GLUI Tip</MessageBarTitle>
+                <MessageBarBody>
+                  You can click on a repository to view details.
+                </MessageBarBody>
+              </MessageBar>
+            </>
           )}
         </TableBody>
       </Table>
+      </>
     );
   }
 }
@@ -223,6 +252,14 @@ function renderCIStatus(item) {
 
 function getGroupNo(item) {
   return item.web_url.split("/")[4].split("-")[2];
+}
+
+function displayInfo(item) {
+  this.setState({ selectedRepo: item });
+}
+
+function closeInfo() {
+  this.setState({ selectedRepo: null });
 }
 
 export default RepoTable;
