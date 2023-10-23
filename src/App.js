@@ -39,10 +39,10 @@ class App extends React.Component {
   render() {
     return (  
       <div className="App" style={{ paddingBottom: '20px', height: '100%'}}>
-        <div style={{position: 'sticky', top: '0', zIndex: '1', padding: '20px', boxShadow: '0px 0px 30px 0px rgba(0,0,0,0.55)', overflow: 'auto', backgroundColor: {myTheme}.colorNeutralBackground1Hover}}>
+        <div style={{position: 'sticky', top: '0', zIndex: '1', padding: '20px', boxShadow: '0px 0px 30px 0px rgba(0,0,0,0.55)', overflow: 'auto', backgroundColor: {myTheme}.colorNeutralBackground1, backdropFilter: 'blur(15px)'}}>
         <HelpDialog/>
         <SettingsDlg open={regex === null || url === null || token === null}/>
-        <Label style={{color: 'white', fontSize: '20px', fontWeight: 'bold', marginRight: '20px'}}>GLUI</Label>
+        <Label style={{fontSize: '20px', fontWeight: 'bold', marginRight: '20px'}}>GLUI</Label>
         <ToggleSwitch action={(checked) => {
           this.setState({failOnly: checked});
         }}

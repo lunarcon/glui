@@ -40,7 +40,8 @@ export async function getAllRepositories(callback) {
 
     for (let repo of repos) {
       repo.branches = await getBranches(repo.id);
-      repo.cistatus = await getBranchCIStatus(repo.id, repo.branches.slice(-1)[0]);
+      let defaultorlast = localStorage.getItem("defaultorlast");
+      repo.cistatus = await getBranchCIStatus(repo.id, defaultorlast === "default" ? repo.default_branch : repo.branches.slice(-1)[0]);
       repo.latestcommit = await getLatestCommit(repo.id);
       if (callback) {
         callback(repo);

@@ -30,7 +30,8 @@ class SettingsDlg extends React.Component {
             main_gid: localStorage.getItem("main_gid") || "",
             token: localStorage.getItem("token") || "",
             dark: localStorage.getItem("dark")==="true" || false,
-            open: props.open || false
+            open: props.open || false,
+            defaultorlast: localStorage.getItem("defaultorlast") || "latest"
         };
         if (this.state.url === "") {
             this.state.url = "https://kgcoe-git.rit.edu";
@@ -60,10 +61,10 @@ class SettingsDlg extends React.Component {
                             <Input placeholder={"123456"} onChange={(event) => this.setState({main_gid: event.target.value})} value={this.state.main_gid}></Input>
                             <Label>On main list, display pipeline status of</Label>
                             <RadioGroup>
-                                <Radio name="status" value="latest" defaultChecked={true} label={"Latest Branch"}></Radio>
-                                <Radio name="status" value="default" label={"Default Branch"}></Radio>
+                                <Radio name="status" value="latest" defaultChecked={this.state.defaultorlast==="latest"} label={"Latest Branch"} onChange={(event) => this.setState({defaultorlast: event.target.checked ? event.target.value : "default"})}/>
+                                <Radio name="status" value="default" label={"Default Branch"} defaultChecked={this.state.defaultorlast!=="latest"} onChange={(event) => this.setState({defaultorlast: event.target.checked ? event.target.value : "latest"})}/>
                             </RadioGroup>
-                            <ToggleSwitch label="Dark Mode" state={this.state.dark} action={(checked) => {localStorage.setItem("dark", checked); window.location.reload();}}/>
+                            <ToggleSwitch label="Dark Mode" state={this.state.dark} action={(checked) => {localStorage.setItem("dark", checked);}}/>
                         </DialogBody>
                     </DialogContent>
                     <DialogActions style={{display: 'flex', justifyContent: 'flex-end'}}>
@@ -72,6 +73,7 @@ class SettingsDlg extends React.Component {
                             localStorage.setItem("token", this.state.token);
                             localStorage.setItem("regex", this.state.regex);
                             localStorage.setItem("main_gid", this.state.main_gid);
+                            localStorage.setItem("defaultorlast", this.state.defaultorlast);
                             window.location.reload();
                         }}>Save</Button>
                         <Button onClick={() => {
