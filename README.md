@@ -6,7 +6,7 @@ GitLab Repository Management Tool for Course Assistants
 ![homepage](images/home.png)
 
 ## Setttings
-![settings](images/settings.png)
+![settings](images/set.png)
 
 ## Planned Features
 - [x] Detailed view of CI statuses by branch
