@@ -37,7 +37,7 @@ class SettingsDlg extends React.Component {
             this.state.url = "https://";
         }
         if (this.state.regex === "") {
-            this.state.regex = "rest-.+";
+            this.state.regex = ".+";
         }
     }
 
@@ -55,7 +55,7 @@ class SettingsDlg extends React.Component {
                             <Input placeholder={"https://"} onChange={(event) => this.setState({url: event.target.value})} value={this.state.url}></Input>
                             <Label>Default regex to filter repositories</Label>
                             <Input placeholder={"rest-.+"} onChange={(event) => this.setState({regex: event.target.value})} value={this.state.regex}></Input>
-                            <Tooltip content={"This will be cleared if you clear your cache. For security reasons, do not save it. Revoke and re-enter the token every two weeks"} relationship="label"><Label>Gitlab Personal Access Token <InfoRegular/> <Link href={"https://{this.state.url}/-/profile/personal_access_tokens"} target="_blank">Generate</Link></Label></Tooltip>
+                            <Tooltip content={"This will be cleared if you clear your cache. For security reasons, do not save it. Revoke and re-enter the token every two weeks"} relationship="label"><Label>Gitlab Personal Access Token <InfoRegular/> <Link href={"https://"+this.state.url+"/-/profile/personal_access_tokens"}target="_blank">Generate</Link></Label></Tooltip>
                             <Input type="password" placeholder={"Generate a personal access token"} onChange={(event) => this.setState({token: event.target.value})} value={this.state.token}></Input>
                             <Tooltip content={"Go to "+this.state.url+" and copy the main group id"} relationship="label"><Label>Main Group ID <InfoRegular/></Label></Tooltip>
                             <Input placeholder={"123456"} onChange={(event) => this.setState({main_gid: event.target.value})} value={this.state.main_gid}></Input>
